@@ -120,7 +120,6 @@ Agents/
 │   └── workflow.json
 ├── images/
 ├── app.py
-├── requirements.txt
 ├── .env.example
 └── README.md
 ```
