@@ -14,7 +14,7 @@ Multi-agent AI system built with FastAPI, LangGraph, Gemini and n8n that process
 
 ## 🎥 Demo
 
-
+https://lnkd.in/p/dnjEbzjc
 
 ---
 
@@ -187,8 +187,8 @@ streamlit run app.py
 **Ghulam Hassan**
 BS Cyber Security student | Exploring AI automation and secure AI systems
 
-- GitHub: [@hassanalighulam7-spec](https://github.com/hassanalighulam7-spec)
-- LinkedIn: [Add your LinkedIn profile link](PASTE_LINKEDIN_LINK_HERE)
+- GitHub: (https://github.com/hassanalighulam7-spec)
+- LinkedIn:(https://www.linkedin.com/in/ghulamhassan-cyber/)
 
 ---
 
