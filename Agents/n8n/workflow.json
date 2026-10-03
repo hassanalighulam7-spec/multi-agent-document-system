@@ -1,0 +1,215 @@
+{
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/process-document",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "Upload_Document"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "8138e2bb-2599-47d7-98e2-a4d564061925",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1au5i7n2bkEb-9NVHA0GwMai4mf8hekKbc_G6dcQparY/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1au5i7n2bkEb-9NVHA0GwMai4mf8hekKbc_G6dcQparY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.format('YYYY-MM-DD HH:mm') }}",
+            "File Name": "={{ $('On form submission').item.binary.Upload_Document.fileName }}",
+            "Requirements": "={{ $json.result.requirements }}",
+            "Research Data": "={{ $json.result.research_data }}",
+            "Status": "={{ $json.status || 'SUCCESS' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "File Name",
+              "displayName": "File Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Requirements",
+              "displayName": "Requirements",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Research Data",
+              "displayName": "Research Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        144,
+        0
+      ],
+      "id": "b4c7584b-2906-4435-901c-0ef4028ec597",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "H6MCDVergS1UNZr7",
+          "name": "Google Sheets account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Document AI Processor",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload Document",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -352,
+        0
+      ],
+      "id": "c47074be-b48a-44e6-987d-62ffc3828cf0",
+      "name": "On form submission",
+      "webhookId": "6355b47a-100b-4714-81d0-48d8637e8596"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Document Audit Complete",
+        "completionMessage": "Document processed and logged successfully!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        384,
+        0
+      ],
+      "id": "35b8ea0c-b746-4972-9a77-9a39722bf2a4",
+      "name": "Form",
+      "webhookId": "37d361da-243e-496f-b8fd-e0caf46b6754"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ab181906-1615-4722-9d27-233c6acd7933",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e4f8a4b254b2be1966a4d3aae00069858659f171b559c8542bf07d72ffaa51bf"
+  },
+  "nodeGroups": [],
+  "id": "EhYPrKqSrECisjW9",
+  "tags": []
+}
